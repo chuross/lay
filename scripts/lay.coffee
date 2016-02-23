@@ -12,3 +12,12 @@ module.exports = (robot) ->
     `restart` - botを再起動します
     `update` - botをアップデートします
     '''
+
+  #
+  # 再起動
+  #
+  robot.respond /restart/i, (res) ->
+    res.send 'レディ 再起動します'
+    setTimeout ->
+      process.exit()
+    , 1000
