@@ -5,17 +5,18 @@
 LayConfig = require './lay_config'
 RoboTalk = require './robotalk'
 
-
 module.exports = (robot) ->
+
   ###
   help
   ###
   robot.respond /--help/i, (res) ->
     res.send '''
-      `initialize` - botの設定を初期化します
-      `restart` - botを再起動します
-      `update` - botをアップデートします
-      `config` - botの設定を操作します
+      `initialize` - botの設定を初期化する
+      `restart` - botを再起動する
+      `update` - botをアップデートする
+      `config` - botの設定を操作する
+      `repository` - repositoryを操作する
     '''
 
 
@@ -64,7 +65,7 @@ module.exports = (robot) ->
         if LayConfig.put(key, value)
           res.send "レディ #{JSON.stringify(LayConfig.getAll())}"
         else
-          res.send "失敗 `put config #{key}=#{value}`"
+          res.send "失敗 `put config #{key} #{value}`"
 
     res.send '正しい値ではありません' if !exists
 
@@ -86,7 +87,8 @@ initializationTalk = (robot) ->
     configs = LayConfig.getAll()
     commandStr = ""
     for key of configs
-      commandStr += "`@#{robot.name} config #{key}=?`\n"
+      commandStr += "`@#{robot.name} config #{key} \<value\>`\n"
+    res.send '各種設定項目を入力してください'
     res.send commandStr
 
   action2 = new RoboTalk.TalkAction
