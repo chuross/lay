@@ -17,6 +17,7 @@ module.exports = (robot) ->
       `update` - botをアップデートする
       `config` - botの設定を操作する
       `repository` - repositoryを操作する
+      `deploygate` - DeployGateを操作する
     '''
 
 
