@@ -34,12 +34,14 @@ module.exports = (robot) ->
   ###
   robot.respond /deploygate upload (.*)/i, (res) ->
     options = {}
-    res.match[1].split('-')
+    res.match[1].split(' -')
     .filter((option) ->
       option.split(' ')[0].length > 0
     ).map((option) ->
       obj = {}
-      obj[option.split(' ')[0]] = option.split(' ')[1]
+      key = if option.split(' ')[0].startsWith('-') then option.split(' ')[0].substring 1 else option.split(' ')[0]
+      val = option.split(' ')[1]
+      obj[key] = val
       obj
     ).forEach (option) ->
       Merge(options, option)
@@ -47,7 +49,6 @@ module.exports = (robot) ->
     remoteName = 'origin'
     branch = 'master'
     flavor = 'production'
-
     for key, value of options
       switch key
         when 'remote' then remoteName = value
