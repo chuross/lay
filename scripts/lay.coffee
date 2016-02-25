@@ -4,8 +4,11 @@
 
 LayConfig = require './lay_config'
 RoboTalk = require './robotalk'
+Exec = require('child_process').exec
+Path = require 'path'
 
 module.exports = (robot) ->
+  robotPath = Path.resolve __dirname, '..'
 
   ###
   help
@@ -41,7 +44,21 @@ module.exports = (robot) ->
     res.send 'レディ 再起動します'
     setTimeout ->
       process.exit()
-    , 1000
+    , 500
+
+  ###
+  アップデート
+  ###
+  robot.respond /update/i, (res) ->
+    res.send 'レディ アップデートを開始します'
+    Exec "cd #{robotPath} && git pull origin master", (error, stdout, stderr) ->
+      if error != null
+        res.send "エラー #{error}"
+        return
+      res.send '再起動します'
+      setTimeout ->
+        process.exit()
+      , 500
 
 
   ###
