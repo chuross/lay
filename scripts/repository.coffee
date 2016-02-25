@@ -24,7 +24,7 @@ module.exports = (robot) ->
   repositoryを削除して再度cloneしなおす
   ###
   robot.respond /repository refresh/i, (res) ->
-    res.send "レディ target #{getRemotePath()}"
+    res.send "レディ #{getRemotePath()}"
 
     if localRepositoryPath == null or localRepositoryPath == undefined or localRepositoryPath == '/'
       res.send "無効なパスが選択されています #{localRepositoryPath}"
@@ -39,6 +39,7 @@ module.exports = (robot) ->
   remote先の一覧を表示する
   ###
   robot.respond /repository remote list/i, (res) ->
+    res.send 'レディ'
     Exec "cd #{localRepositoryPath} && git remote -v | grep \"fetch\"", (error, stdout, stderr) ->
       res.send "エラー #{error}" if error != null
       res.send stdout if stdout != null
@@ -55,6 +56,8 @@ module.exports = (robot) ->
       res.send "無効な名前です #{name}"
       return
 
+    res.send 'レディ'
+
     Exec "cd #{localRepositoryPath} && git remote add #{name} #{remotePath} && git remote -v  | grep \"fetch\"", (error, stdout, stderr) ->
       res.send "エラー #{error}" if error != null
       res.send stdout if stdout != null
@@ -69,6 +72,8 @@ module.exports = (robot) ->
     if name == undefined or name == 'origin'
       res.send "無効な名前です #{name}"
       return
+
+    res.send 'レディ'
 
     Exec "cd #{localRepositoryPath} && git remote rm #{name} && git remote -v  | grep \"fetch\"", (error, stdout, stderr) ->
       res.send "エラー #{error}" if error != null
