@@ -13,8 +13,8 @@ module.exports = (robot) ->
   ###
   robot.respond /deploygate --help/i, (res) ->
     res.send '''
-      deployGate tasks - 実行可能なDeployGateタスクを表示する
-      deployGate upload -remote <:remoteName> -banch <:branch> -flavor <:buildFlavor> - DeployGateに指定したBuildFlavorでアップロードする\n特に指定がなければrepo=origin, branch=master, flavor=production
+      `deployGate tasks` - 実行可能なDeployGateタスクを表示する
+      `deployGate upload -remote <:remoteName> -banch <:branch> -flavor <:buildFlavor>` - DeployGateに指定したBuildFlavorでアップロードする\n特に指定がなければrepo=origin, branch=master, flavor=production
     '''
 
 

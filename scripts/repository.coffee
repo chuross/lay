@@ -13,10 +13,10 @@ module.exports = (robot) ->
   ###
   robot.respond /repository --help/i, (res) ->
     res.send '''
-      repository refresh - repositoryを削除して再度cloneしなおす
-      repository remote list - remote先の一覧を表示する
-      repository remote add <name> <remotePath> - remote先を登録する
-      repository remote rm <name> - remote先を削除する
+      `repository refresh` - repositoryを削除して再度cloneしなおす
+      `repository remote list` - remote先の一覧を表示する
+      `repository remote add <name> <remotePath>` - remote先を登録する
+      `repository remote rm <name>` - remote先を削除する
     '''
 
 
