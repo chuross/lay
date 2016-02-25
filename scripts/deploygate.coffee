@@ -23,7 +23,7 @@ module.exports = (robot) ->
   ###
   robot.respond /deploygate tasks/i, (res) ->
     Exec "cd #{localRepositoryPath} && ./gradlew tasks | grep \"uploadDeployGate\"", (error, stdout, stderr) ->
-      res.send "エラー #{stderr}" if stderr.length > 0
+      res.send "エラー #{error}" if error != null
       res.send stdout if stdout != null
 
 
@@ -56,4 +56,4 @@ module.exports = (robot) ->
 
     localBranch = "#{remoteName}-#{branch}"
     Exec "cd #{localRepositoryPath} && git checkout master && git fetch #{remoteName} #{branch}:#{localBranch} && git checkout #{localBranch} && ./gradlew uploadDeployGate#{flavor}", (error, stdout, stderr) ->
-      res.send "エラー #{stderr}" if stderr.length > 0
+      res.send "エラー #{error}" if error != null

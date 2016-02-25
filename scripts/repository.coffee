@@ -31,7 +31,7 @@ module.exports = (robot) ->
       return
 
     Exec "rm -rf #{localRepositoryPath} && git clone #{getRemotePath()} #{localRepositoryPath}", (error, stdout, stderr) ->
-      res.send "エラー #{stderr}" if stderr.length > 0
+      res.send "エラー #{error}" if error != null
       res.send "refresh complete #{stdout}" if stdout != null
 
 
@@ -40,7 +40,7 @@ module.exports = (robot) ->
   ###
   robot.respond /repository remote list/i, (res) ->
     Exec "cd #{localRepositoryPath} && git remote -v | grep \"fetch\"", (error, stdout, stderr) ->
-      res.send "エラー #{stderr}" if stderr.length > 0
+      res.send "エラー #{error}" if error != null
       res.send stdout if stdout != null
 
 
@@ -56,7 +56,7 @@ module.exports = (robot) ->
       return
 
     Exec "cd #{localRepositoryPath} && git remote add #{name} #{remotePath} && git remote -v  | grep \"fetch\"", (error, stdout, stderr) ->
-      res.send "エラー #{stderr}" if stderr.length > 0
+      res.send "エラー #{error}" if error != null
       res.send stdout if stdout != null
 
 
@@ -71,7 +71,7 @@ module.exports = (robot) ->
       return
 
     Exec "cd #{localRepositoryPath} && git remote rm #{name} && git remote -v  | grep \"fetch\"", (error, stdout, stderr) ->
-      res.send "エラー #{stderr}" if stderr.length > 0
+      res.send "エラー #{error}" if error != null
       res.send stdout if stdout != null
 
 
