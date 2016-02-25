@@ -55,7 +55,5 @@ module.exports = (robot) ->
     res.send "#{remoteName} #{branch}のAPKをアップロードします"
 
     localBranch = "#{remoteName}-#{branch}"
-    Exec "cd #{localRepositoryPath} && git fetch #{remoteName} #{branch}:#{localBranch} && git checkout #{localBranch} && ./gradlew uploadDeployGate#{flavor}", (error, stdout, stderr) ->
+    Exec "cd #{localRepositoryPath} && git checkout master && git fetch #{remoteName} #{branch}:#{localBranch} && git checkout #{localBranch} && ./gradlew uploadDeployGate#{flavor}", (error, stdout, stderr) ->
       res.send "エラー #{stderr}" if stderr.length > 0
-      res.send stdout if stdout != null
-
