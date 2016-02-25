@@ -57,6 +57,18 @@ module.exports = (robot) ->
 
     res.send "レディ #{remoteName} #{branch}のAPKをアップロードします"
 
-    localBranch = "#{remoteName}-#{branch}"
-    Exec "cd #{localRepositoryPath} && git checkout master && git fetch #{remoteName} #{branch}:#{localBranch} && git checkout #{localBranch} && ./gradlew uploadDeployGate#{flavor}", (error, stdout, stderr) ->
+    command = if branch.startsWith 'refs/tags' then getUploadTagApkCommand(branch) else getUploadBranchApkCommand(remoteName, branch)
+
+    Exec "cd #{localRepositoryPath} && git checkout master && #{command} && ./gradlew uploadDeployGate#{flavor}", (error, stdout, stderr) ->
       res.send "エラー #{error}" if error != null
+
+###
+internal
+###
+getUploadBranchApkCommand = (remoteName, branch) ->
+  localBranch = "#{remoteName}-#{branch}"
+  "git fetch #{remoteName} #{branch}:#{localBranch} && git checkout #{localBranch}"
+
+
+getUploadTagApkCommand = (tag) ->
+  "git fetch origin #{tag} && git checkout #{tag}"
