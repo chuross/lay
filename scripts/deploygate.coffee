@@ -13,8 +13,8 @@ module.exports = (robot) ->
   ###
   robot.respond /deploygate --help/i, (res) ->
     res.send '''
-      `deployGate tasks` - 実行可能なDeployGateタスクを表示する
-      `deployGate upload -remote <:remoteName> -banch <:branch> -flavor <:buildFlavor>` - DeployGateに指定したBuildFlavorでアップロードする\n特に指定がなければrepo=origin, branch=master, flavor=production
+      `deploygate tasks` - 実行可能なDeployGateタスクを表示する
+      `deploygate upload -remote <:remoteName> -banch <:branch> -flavor <:buildFlavor>` - DeployGateに指定したBuildFlavorでアップロードする\n特に指定がなければrepo=origin, branch=master, flavor=debug
     '''
 
 
@@ -48,7 +48,7 @@ module.exports = (robot) ->
 
     remoteName = 'origin'
     branch = 'master'
-    flavor = 'production'
+    flavor = 'debug'
     for key, value of options
       switch key
         when 'remote' then remoteName = value
@@ -57,7 +57,8 @@ module.exports = (robot) ->
 
     res.send "レディ #{remoteName} #{branch}のAPKをアップロードします"
 
-    command = if branch.startsWith 'refs/tags' then getUploadTagApkCommand(branch) else getUploadBranchApkCommand(remoteName, branch)
+    command = if branch.startsWith 'refs/tags' then getUploadTagApkCommand(branch) else getUploadBranchApkCommand(remoteName,
+      branch)
 
     Exec "cd #{localRepositoryPath} && git checkout master && #{command} && ./gradlew uploadDeployGate#{flavor}", (error, stdout, stderr) ->
       res.send "エラー #{error}" if error != null
