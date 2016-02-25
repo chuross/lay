@@ -1,3 +1,4 @@
 {
-	"repository_remote_path":""
+	"repository_remote_path":"",
+	"deploygate_default_flavor": ""
 }

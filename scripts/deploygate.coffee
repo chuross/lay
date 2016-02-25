@@ -2,6 +2,7 @@
 DeployGate実行用
 ###
 
+LayConfig = require './lay_config'
 Exec = require('child_process').exec
 Merge = require 'merge'
 
@@ -12,10 +13,10 @@ module.exports = (robot) ->
   help
   ###
   robot.respond /deploygate --help/i, (res) ->
-    res.send '''
+    res.send """
       `deploygate tasks` - 実行可能なDeployGateタスクを表示する
-      `deploygate upload -remote <:remoteName> -banch <:branch> -flavor <:buildFlavor>` - DeployGateに指定したBuildFlavorでアップロードする\n特に指定がなければrepo=origin, branch=master, flavor=debug
-    '''
+      `deploygate upload -remote <:remoteName> -banch <:branch> -flavor <:buildFlavor>` - DeployGateに指定したBuildFlavorでアップロードする\n特に指定がなければrepo=origin, branch=master, flavor=#{getDefaultFlavor()}
+    """
 
 
   ###
@@ -48,7 +49,7 @@ module.exports = (robot) ->
 
     remoteName = 'origin'
     branch = 'master'
-    flavor = 'debug'
+    flavor = getDefaultFlavor()
     for key, value of options
       switch key
         when 'remote' then remoteName = value
@@ -73,3 +74,9 @@ getUploadBranchApkCommand = (remoteName, branch) ->
 
 getUploadTagApkCommand = (tag) ->
   "git fetch origin #{tag} && git checkout #{tag}"
+
+
+getDefaultFlavor = ->
+  defaultFlavor = LayConfig.get 'deploygate_default_flavor'
+  defaultFlavor = 'debug' if defaultFlavor.length == 0
+  defaultFlavor
