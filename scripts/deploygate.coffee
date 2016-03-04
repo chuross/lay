@@ -69,11 +69,11 @@ internal
 ###
 getUploadBranchApkCommand = (remoteName, branch) ->
   localBranch = "#{remoteName}-#{branch}"
-  "git fetch #{remoteName} #{branch}:#{localBranch} && git checkout #{localBranch}"
+  "git fetch -f #{remoteName} #{branch}:#{localBranch} && git checkout #{localBranch}"
 
 
 getUploadTagApkCommand = (tag) ->
-  "git fetch origin #{tag} && git checkout #{tag}"
+  "git fetch origin --tags && git checkout #{tag}"
 
 
 getDefaultFlavor = ->
